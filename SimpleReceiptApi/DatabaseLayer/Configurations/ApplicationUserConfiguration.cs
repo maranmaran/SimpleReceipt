@@ -13,11 +13,6 @@ namespace DatabaseLayer.Configurations
             builder
                 .HasMany(x => x.Receipts)
                 .WithOne(y => y.Waiter);
-
-            builder
-                .HasOne(x => x.Cafe)
-                .WithMany(y => y.Waiters)
-                .HasForeignKey(z => z.CafeId);
         }
     }
 }

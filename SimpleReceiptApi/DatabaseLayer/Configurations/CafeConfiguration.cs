@@ -14,10 +14,6 @@ namespace DatabaseLayer.Configurations
                 .HasForeignKey<PriceTable>(z => z.CafeId);
 
             builder
-                .HasMany(x => x.Waiters)
-                .WithOne(y => y.Cafe);
-
-            builder
                 .HasMany(x => x.Tables)
                 .WithOne(y => y.Cafe);
 

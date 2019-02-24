@@ -18,9 +18,10 @@ namespace DatabaseLayer.Data
 
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Product> Products { get; set; }
-
         public DbSet<PriceTable> PriceTables { get; set; }
+
         public DbSet<PriceTableQuery> PriceTableQueries { get; set; }
+        public DbSet<WaiterCafe> WaiterCafes { get; set; }
         public DbSet<ReceiptPriceTableQuery> ReceiptPriceTableQueries { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -45,9 +46,10 @@ namespace DatabaseLayer.Data
 
             builder.ApplyConfiguration(new ReceiptConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
-
             builder.ApplyConfiguration(new PriceTableConfiguration());
+
             builder.ApplyConfiguration(new PriceTableQueryConfiguration());
+            builder.ApplyConfiguration(new WaiterCafeConfiguration());
             builder.ApplyConfiguration(new ReceiptPriceTableQueryConfiguration());
         }
     }

@@ -4,14 +4,16 @@ using DatabaseLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatabaseLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190224145522_waiter-cafes")]
+    partial class waitercafes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,8 +27,6 @@ namespace DatabaseLayer.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
-
-                    b.Property<long?>("CafeId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -64,8 +64,6 @@ namespace DatabaseLayer.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CafeId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -227,6 +225,19 @@ namespace DatabaseLayer.Migrations
                     b.ToTable("Tables");
                 });
 
+            modelBuilder.Entity("DatabaseLayer.Models.WaiterCafe", b =>
+                {
+                    b.Property<string>("WaiterId");
+
+                    b.Property<long>("CafeId");
+
+                    b.HasKey("WaiterId", "CafeId");
+
+                    b.HasIndex("CafeId");
+
+                    b.ToTable("WaiterCafes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -337,13 +348,6 @@ namespace DatabaseLayer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DatabaseLayer.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("DatabaseLayer.Models.Cafe", "Cafe")
-                        .WithMany("Waiters")
-                        .HasForeignKey("CafeId");
-                });
-
             modelBuilder.Entity("DatabaseLayer.Models.Cafe", b =>
                 {
                     b.HasOne("DatabaseLayer.Models.Company", "Company")
@@ -413,6 +417,19 @@ namespace DatabaseLayer.Migrations
                     b.HasOne("DatabaseLayer.Models.Cafe", "Cafe")
                         .WithMany("Tables")
                         .HasForeignKey("CafeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DatabaseLayer.Models.WaiterCafe", b =>
+                {
+                    b.HasOne("DatabaseLayer.Models.Cafe", "Cafe")
+                        .WithMany("Waiters")
+                        .HasForeignKey("CafeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DatabaseLayer.Models.ApplicationUser", "Waiter")
+                        .WithMany("Cafes")
+                        .HasForeignKey("WaiterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

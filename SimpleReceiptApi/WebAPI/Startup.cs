@@ -219,12 +219,12 @@ namespace WebAPI
 
             if (createAdminUser.Succeeded && createW1.Succeeded && createW2.Succeeded && createW3.Succeeded)
             {
-                 userManager.AddToRoleAsync(adminUser, "Admin").Wait();
-                 userManager.AddToRoleAsync(adminUser, "Waiter").Wait();
+                userManager.AddToRoleAsync(adminUser, "Admin").Wait();
+                userManager.AddToRoleAsync(adminUser, "Waiter").Wait();
 
-                 userManager.AddToRoleAsync(waiter1, "Waiter").Wait();
-                 userManager.AddToRoleAsync(waiter2, "Waiter").Wait();
-                 userManager.AddToRoleAsync(waiter3, "Waiter").Wait();
+                userManager.AddToRoleAsync(waiter1, "Waiter").Wait();
+                userManager.AddToRoleAsync(waiter2, "Waiter").Wait();
+                userManager.AddToRoleAsync(waiter3, "Waiter").Wait();
 
 
                 var product1 = new Product()
@@ -243,6 +243,88 @@ namespace WebAPI
                     Type = '0',
                 };
 
+                var cafe1 = new Cafe()
+                {
+                    Name = "Cafe1",
+                    Tables = new List<Table>()
+                    {
+                        new Table()
+                        {
+                            Name = "Table1"
+                        },
+                        new Table()
+                        {
+                            Name = "Table2"
+                        },
+                        new Table()
+                        {
+                            Name = "Table3"
+                        },
+                    },
+                    PriceTable = new PriceTable()
+                    {
+                        PriceTableQueries = new List<PriceTableQuery>()
+                        {
+                            new PriceTableQuery()
+                            {
+                                Price = 2,
+                                Product = product1
+                            },
+                            new PriceTableQuery()
+                            {
+                                Price = 1,
+                                Product = product2
+                            },
+                            new PriceTableQuery()
+                            {
+                                Price = 3,
+                                Product = product3
+                            },
+                        }
+                    },
+                };
+
+                var cafe2 = new Cafe()
+                {
+                    Name = "Cafe2",
+                    Tables = new List<Table>()
+                    {
+                        new Table()
+                        {
+                            Name = "Table1"
+                        },
+                        new Table()
+                        {
+                            Name = "Table2"
+                        },
+                        new Table()
+                        {
+                            Name = "Table3"
+                        },
+                    },
+                    PriceTable = new PriceTable()
+                    {
+                        PriceTableQueries = new List<PriceTableQuery>()
+                        {
+                            new PriceTableQuery()
+                            {
+                                Price = 2,
+                                Product = product1
+                            },
+                            new PriceTableQuery()
+                            {
+                                Price = 1,
+                                Product = product2
+                            },
+                            new PriceTableQuery()
+                            {
+                                Price = 3,
+                                Product = product3
+                            },
+                        }
+                    },
+                };
+
                 var company = new Company()
                 {
                     Name = "Company",
@@ -253,103 +335,61 @@ namespace WebAPI
                         product3
                     },
                     Cafes = new List<Cafe>()
-                {
-                    new Cafe()
                     {
-                        Name = "Cafe1",
-                        Tables = new List<Table>()
-                        {
-                            new Table()
-                            {
-                                Name = "Table1"
-                            },
-                            new Table()
-                            {
-                                Name = "Table2"
-                            },
-                            new Table()
-                            {
-                                Name = "Table3"
-                            },
-                        },
-                        Waiters = new List<ApplicationUser>()
-                        {
-                            adminUser,
-                            waiter1,
-                            waiter3
-                        },
-                        PriceTable = new PriceTable()
-                        {
-                            PriceTableQueries = new List<PriceTableQuery>()
-                            {
-                                new PriceTableQuery()
-                                {
-                                    Price = 2,
-                                    Product = product1
-                                },
-                                new PriceTableQuery()
-                                {
-                                    Price = 1,
-                                    Product = product2
-                                },
-                                new PriceTableQuery()
-                                {
-                                    Price = 3,
-                                    Product = product3
-                                },
-                            }
-                        },
-                    },
-                    new Cafe()
-                    {
-                        Name = "Cafe2",
-                        Tables = new List<Table>()
-                        {
-                            new Table()
-                            {
-                                Name = "Table1"
-                            },
-                            new Table()
-                            {
-                                Name = "Table2"
-                            },
-                            new Table()
-                            {
-                                Name = "Table3"
-                            },
-                        },
-                        Waiters = new List<ApplicationUser>()
-                        {
-                            waiter2,
-                        },
-                        PriceTable = new PriceTable()
-                        {
-                            PriceTableQueries = new List<PriceTableQuery>()
-                            {
-                                new PriceTableQuery()
-                                {
-                                    Price = 2,
-                                    Product = product1
-                                },
-                                new PriceTableQuery()
-                                {
-                                    Price = 1,
-                                    Product = product2
-                                },
-                                new PriceTableQuery()
-                                {
-                                    Price = 3,
-                                    Product = product3
-                                },
-                            }
-                        },
+                        cafe1,
+                        cafe2
                     }
-                }
                 };
+
+                var waiterCafes = new List<WaiterCafe>()
+                {
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe1,
+                        Waiter = waiter1
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe1,
+                        Waiter = waiter2
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe1,
+                        Waiter = waiter3
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe2,
+                        Waiter = waiter1
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe2,
+                        Waiter = waiter2
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe2,
+                        Waiter = waiter3
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe1,
+                        Waiter = adminUser
+                    },
+                    new WaiterCafe()
+                    {
+                        Cafe = cafe2,
+                        Waiter = adminUser
+                    }
+                };
+
 
                 if (!context.Companies.Any())
                 {
                     context.Companies.Add(company);
+                    context.WaiterCafes.AddRange(waiterCafes);
                     context.SaveChanges();
                 }
             }

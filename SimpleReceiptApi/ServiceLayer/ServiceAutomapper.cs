@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using DatabaseLayer.Models;
+using ServiceLayer.DTOs;
+using ServiceLayer.Extensions;
+using ReceiptPriceTableQuery = DatabaseLayer.Models.ReceiptPriceTableQuery;
 
 namespace ServiceLayer
 {
@@ -17,59 +21,52 @@ namespace ServiceLayer
     {
         public ModelsToDtos()
         {
-            //CreateMap<FatigueEntry, FatigueEntryDto>();
-            //CreateMap<FatigueEntryDto, FatigueEntry>()
-            //    .IgnoreAllVirtual()
-            //    .ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<Cafe, CafeDto>();
+            CreateMap<CafeDto, Cafe>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
-            //CreateMap<FatigueResult, FatigueResultDto>();
-            //CreateMap<FatigueResultDto, FatigueResult>()
-            //    .IgnoreAllVirtual()
-            //    .ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<Company, CompanyDto>();
+            CreateMap<CompanyDto, Company>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
-            //CreateMap<Training, TrainingDto>();
-            //CreateMap<TrainingDto, Training>()
-            //    .IgnoreAllVirtual()
-            //    .ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<PriceTable, PriceTableDto>();
+            CreateMap<PriceTableDto, PriceTable>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
-            //CreateMap<Exercise, ExerciseDto>();
-            //CreateMap<ExerciseDto, Exercise>()
-            //    .ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<PriceTableQuery, PriceTableQueryDto>();
+            CreateMap<PriceTableQueryDto, PriceTableQuery>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
-            //CreateMap<ExerciseType, ExerciseTypeDto>();
-            //CreateMap<ExerciseTypeDto, ExerciseType>()
-            //    .IgnoreAllVirtual()
-            //    .ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
-            //CreateMap<AthleteMax, AthleteMaxDto>();
-            //CreateMap<AthleteMaxDto, AthleteMax>()
-            //    .IgnoreAllVirtual();
+            CreateMap<Receipt, ReceiptDto>();
+            CreateMap<ReceiptDto, Receipt>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
-            //CreateMap<Article, ArticleDto>();
-            //CreateMap<ArticleDto, Article>()
-            //    .IgnoreAllVirtual();
+            CreateMap<ReceiptPriceTableQuery, ReceiptPriceTableQueryDto>();
+            CreateMap<ReceiptPriceTableQueryDto, ReceiptPriceTableQuery>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.ReceiptId, opt => opt.Ignore())
+                .ForMember(x => x.PriceTableQueryId, opt => opt.Ignore());
 
-            //CreateMap<Bodyweight, BodyweightDto>();
-            //CreateMap<BodyweightDto, Bodyweight>()
-            //    .IgnoreAllVirtual();
+            CreateMap<WaiterCafe, WaiterCafeDto>();
+            CreateMap<WaiterCafeDto, WaiterCafe>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.WaiterId, opt => opt.Ignore())
+                .ForMember(x => x.CafeId, opt => opt.Ignore());
 
-            //CreateMap<Report, ReportDto>();
-            //CreateMap<ReportDto, Report>()
-            //    .IgnoreAllVirtual();
-
-            //CreateMap<ReportData, ReportDataDto>();
-            //CreateMap<ReportDataDto, ReportData>()
-            //    .IgnoreAllVirtual();
-
-            //CreateMap<ApplicationUser, RegisterViewModel>()
-            //    .ForAllOtherMembers(opts => opts.Ignore());
-            //CreateMap<RegisterViewModel, ApplicationUser>()
-            //    .ForAllOtherMembers(opts => opts.Ignore());
-
-            //CreateMap<ExerciseViewModel, ExerciseDto>();
-            //CreateMap<ExerciseDto, ExerciseViewModel>()
-            //    .ForMember(x => x.Order, opt => opt.Ignore());
+            CreateMap<Table, TableDto>();
+            CreateMap<TableDto, Table>()
+                .IgnoreAllVirtual()
+                .ForMember(x => x.Id, opt => opt.Ignore());
         }
-
     }
 }

@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190224052250_Init.cs" />
-    <Compile Remove="Migrations\20190224052646_Init.cs" />
-    <Compile Remove="Migrations\20190224052907_Init.cs" />
-    <Compile Remove="Migrations\20190224053143_Init.cs" />
-    <Compile Remove="Migrations\20190224053248_Init.cs" />
+    <Compile Remove="Data\Migrations\20190224052250_Init.cs" />
+    <Compile Remove="Data\Migrations\20190224052646_Init.cs" />
+    <Compile Remove="Data\Migrations\20190224052907_Init.cs" />
+    <Compile Remove="Data\Migrations\20190224053143_Init.cs" />
+    <Compile Remove="Data\Migrations\20190224053248_Init.cs" />
   </ItemGroup>
 
   <ItemGroup>
