@@ -23,6 +23,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using ServiceLayer;
+using ServiceLayer.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using WebAPI.Middleware;
 
@@ -80,7 +81,7 @@ namespace WebAPI
                 });
 
             // ===== Add internal services (operations) ========
-            //services.AddInternalServices();
+            services.AddInternalServices();
 
             // ===== Add CORS ========
             services.AddCors(options =>
@@ -114,6 +115,15 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ApplicationDbContext db)
         {
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+                if (ctx.Response.StatusCode == 204)
+                {
+                    ctx.Response.ContentLength = 0;
+                }
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseCors("AllowAll");

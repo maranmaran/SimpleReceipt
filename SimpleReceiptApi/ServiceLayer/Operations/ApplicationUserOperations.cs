@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DatabaseLayer.Data;
 using DatabaseLayer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServiceLayer.Operations
 {
@@ -17,20 +18,17 @@ namespace ServiceLayer.Operations
     internal class ApplicationUserOperations : IApplicationUserOperations
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ApplicationUserOperations(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ApplicationUserOperations(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         public async Task<List<ApplicationUser>> GetAllWaitersByCafeId(long id)
         {
-            var waiters = await _userManager.GetUsersInRoleAsync("Waiter");
-            var waitersFromCafe = waiters.Where(x => x.Cafes.Any(y => y.CafeId.Equals(id))).ToList();
+            var waiters = await _context.ApplicationUsers.Include(x => x.Cafes).Where(x => x.Cafes.Any(y => y.CafeId.Equals(id))).ToListAsync();
 
-            return waitersFromCafe;
+            return waiters;
         }
     }
 }

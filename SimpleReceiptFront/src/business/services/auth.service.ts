@@ -6,28 +6,23 @@ import * as moment from 'moment';
 
 @Injectable()
 export class AuthService {
-  baseUrl = 'api/account/';
+  baseUrl = 'api/Account/';
   headers = { headers: { 'Content-Type': 'application/json' } };
 
   public badLogin = false;
-  isLoading = new EventEmitter<boolean>();
-
 
   viewAsChanged = new EventEmitter<void>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
   login(username: string, password: string, rememberMe: string) {
-    this.isLoading.emit(true);
-    return this.http.post(this.baseUrl + 'login',
+    return this.http.post(this.baseUrl + 'Login',
       { username, password, rememberMe })
       .subscribe(
         (response: any) => {
           this.setSession(response);
-          this.isLoading.emit(false);
-          this.router.navigate(['/application']);
         },
-       err => { this.isLoading.emit(false); console.log(err); });
+       err => { console.log(err); });
   }
 
   private setSession(authResult) {

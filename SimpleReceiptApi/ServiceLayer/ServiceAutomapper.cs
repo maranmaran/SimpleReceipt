@@ -48,7 +48,6 @@ namespace ServiceLayer
 
             CreateMap<Receipt, ReceiptDto>();
             CreateMap<ReceiptDto, Receipt>()
-                .IgnoreAllVirtual()
                 .ForMember(x => x.Id, opt => opt.Ignore());
 
             CreateMap<ReceiptPriceTableQuery, ReceiptPriceTableQueryDto>();

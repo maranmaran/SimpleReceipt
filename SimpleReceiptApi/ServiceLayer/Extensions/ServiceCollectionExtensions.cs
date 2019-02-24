@@ -17,6 +17,7 @@ namespace ServiceLayer.Extensions
             services.AddTransient<IReceiptOperations, ReceiptOperations>();
             services.AddTransient<ICafeOperations, CafeOperations>();
             services.AddTransient<ITableOperations, TableOperations>();
+            services.AddTransient<IPriceTableQueryOperations, PriceTableQueryOperations>();
 
             return services;
         }

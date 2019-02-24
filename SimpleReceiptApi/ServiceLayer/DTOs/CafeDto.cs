@@ -16,7 +16,7 @@ namespace ServiceLayer.DTOs
         public long PriceTableId { get; set; }
         public PriceTable PriceTable { get; set; }
 
-        public ICollection<ApplicationUser> Waiters { get; set; }
+        public ICollection<WaiterCafe> Waiters { get; set; }
         public ICollection<Table> Tables { get; set; }
         public ICollection<Receipt> Receipts { get; set; }
     }

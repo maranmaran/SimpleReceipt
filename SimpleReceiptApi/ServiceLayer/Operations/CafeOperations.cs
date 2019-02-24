@@ -27,7 +27,7 @@ namespace ServiceLayer.Operations
 
         public async Task<List<CafeDto>> GetAllByUserId(string id)
         {
-            var cafes = await _context.Cafes.Where(x => x.Waiters.Any(y => y.WaiterId.Equals(id))).ToListAsync();
+            var cafes = await _context.Cafes.Include(x => x.Waiters).Where(x => x.Waiters.Any(y => y.WaiterId.Equals(id))).ToListAsync();
             return Mapper.Map<List<CafeDto>>(cafes);
         }
     }

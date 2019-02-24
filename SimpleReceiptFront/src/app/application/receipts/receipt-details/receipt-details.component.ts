@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ReceiptService } from 'src/business/services/receipt.service';
+import { Receipt } from 'src/business/models/receipt.model';
 
 @Component({
   selector: 'app-receipt-details',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReceiptDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private receiptService: ReceiptService) { }
 
+  receipt: Receipt;
   ngOnInit() {
+    this.receiptService.selectedReceipt.subscribe(
+      (receipt: Receipt) => this.receipt = receipt,
+      err => console.log(err)
+    );
   }
 
 }

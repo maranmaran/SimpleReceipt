@@ -1,8 +1,8 @@
+import { ErrorHelper } from './../helpers/error.helper';
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
-import { ErrorHelper } from './helpers/error.helper';
 
 @Injectable()
 export class HttpInterceptor implements HttpInterceptor {
@@ -11,7 +11,7 @@ export class HttpInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const baseUrl = 'http://localhost:49972/';
+    const baseUrl = 'https://localhost:44317/';
     // onst baseUrl = '';
 
     req = req.clone({

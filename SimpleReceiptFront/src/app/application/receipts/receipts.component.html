@@ -1,3 +1,20 @@
-<p>
-  receipts works!
-</p>
+<hr>
+<h4>
+  Cafe {{ cafeId }}
+</h4>
+<hr>
+
+<div class="row mb-5">
+  <div class="col">
+      <button mat-button color="primary" [routerLink]="['/create-receipt', cafeId]"><i class="fa fa-plus"></i> Receipt</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <app-receipts-list (selectedReceipt)="onSelectReceipt($event)"></app-receipts-list>
+  </div>
+  <div class="col-6" *ngIf="receiptSelected">
+    <app-receipt-details></app-receipt-details>
+  </div>
+</div>

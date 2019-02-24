@@ -1,3 +1,51 @@
-<p>
-  receipt-details works!
-</p>
+<div *ngIf="receipt !== undefined && receipt !== null">
+  <div class="row">
+    <h4>Receipt #{{ receipt.id }} </h4>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label>Issued on:</label>
+    </div>
+    <div class="col-auto">
+      <span>{{ receipt.createdOn | date: 'EEEE, dd/MM/yy' }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label>Issued by:</label>
+    </div>
+    <div class="col-auto">
+      <span>{{ receipt.waiter.firstName }} {{ receipt.waiter.lastName }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label>Table:</label>
+    </div>
+    <div class="col-auto">
+      <span>{{ receipt.table.name }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label>Total:</label>
+    </div>
+    <div class="col-auto">
+      <span>{{ receipt.total }} $</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <label>Items:</label>
+    </div>
+    <div class="col-12">
+      <div *ngFor="let item of receipt.receiptPriceTableQueries">
+        <div class="row">
+          <div class="col-12">
+            {{ item.priceTableQuery.product.name }} - Quantity: {{ item.quantity }}, Price: {{ item.priceTableQuery.price }}$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

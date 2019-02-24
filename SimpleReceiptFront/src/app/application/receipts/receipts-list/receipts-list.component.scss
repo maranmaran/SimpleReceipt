@@ -1,0 +1,18 @@
+table {
+  width: -webkit-fill-available !important;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+
+.mat-row:hover {
+  background-color: rgba(0,0,0,0.1);
+  cursor: pointer;
+}

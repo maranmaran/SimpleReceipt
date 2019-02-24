@@ -14,14 +14,16 @@ namespace WebAPI.Controllers
         private readonly IApplicationUserOperations _applicationUserOperations;
         private readonly ITableOperations _tableOperations;
         private readonly ICafeOperations _cafeOperations;
+        private readonly IPriceTableQueryOperations _priceTableQueryOperations;
 
 
         public CafeController(
-            IApplicationUserOperations applicationUserOperations, ITableOperations tableOperations, ICafeOperations cafeOperations)
+            IApplicationUserOperations applicationUserOperations, ITableOperations tableOperations, ICafeOperations cafeOperations, IPriceTableQueryOperations priceTableQueryOperations)
         {
             _applicationUserOperations = applicationUserOperations;
             _tableOperations = tableOperations;
             _cafeOperations = cafeOperations;
+            _priceTableQueryOperations = priceTableQueryOperations;
         }
 
         [HttpGet("{id}")]
@@ -32,16 +34,23 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllWaiters(long id)
+        public IActionResult GetAllWaiters(long id)
         {
-            var result = await _applicationUserOperations.GetAllWaitersByCafeId(id);
+            var result = _applicationUserOperations.GetAllWaitersByCafeId(id).Result;
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllTables(long id)
+        public IActionResult GetAllTables(long id)
         {
-            var result = await _tableOperations.GetAllByCafeId(id);
+            var result = _tableOperations.GetAllByCafeId(id).Result;
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetAllPriceTableQueries(long id)
+        {
+            var result = _priceTableQueryOperations.GetAllPriceTableQueriesByCafeId(id).Result;
             return Ok(result);
         }
     }

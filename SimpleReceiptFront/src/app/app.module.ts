@@ -1,25 +1,31 @@
+import { ApplicationComponent } from './application/application.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule } from './material.module';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ErrorComponent } from './handle-pages/error/error.component';
 import { NavbarComponent } from './application/navbar/navbar.component';
 import { ReceiptsComponent } from './application/receipts/receipts.component';
 import { ReceiptsListComponent } from './application/receipts/receipts-list/receipts-list.component';
-import { CreateOrEditReceiptComponent } from './application/receipts/receipts-list/create-or-edit-receipt/create-or-edit-receipt.component';
 import { ReceiptDetailsComponent } from './application/receipts/receipt-details/receipt-details.component';
 import { HttpInterceptor } from 'src/business/interceptors/http.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './modules/app-routing.module';
+import { MaterialModule } from './modules/material.module';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { AuthService } from '../business/services/auth.service';
+import { ErrorHelper } from '../business/helpers/error.helper';
+import { CreateOrEditReceiptComponent } from './application/receipts/create-or-edit-receipt/create-or-edit-receipt.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CafeService } from '../business/services/cafe.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     ErrorComponent,
     NavbarComponent,
+    ApplicationComponent,
     ReceiptsComponent,
     ReceiptsListComponent,
     CreateOrEditReceiptComponent,
@@ -27,13 +33,18 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     LoginComponent
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
-    MaterialModule,
     AppRoutingModule,
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
+    AuthService,
+    CafeService,
+    ErrorHelper
   ],
   bootstrap: [AppComponent]
 })

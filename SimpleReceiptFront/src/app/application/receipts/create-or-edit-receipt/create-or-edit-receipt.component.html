@@ -1,0 +1,77 @@
+<form [formGroup]="receiptForm">
+  <div class="row">
+    <div class="col-12">
+      <label for="waiter">Waiter:</label>
+    </div>
+    <div class="col-5">
+      <select class="form-control " formControlName="waiter">
+        <option value="-1" disabled>Select waiter</option>
+        <option [ngValue]="waiter.id" *ngFor="let waiter of waiters">
+          {{ waiter.firstName }} {{ waiter.lastName }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <label for="waiter">Table:</label>
+    </div>
+    <div class="col-5">
+      <select class="form-control " formControlName="table">
+        <option value="-1" disabled>Select table</option>
+        <option [ngValue]="table.id" *ngFor="let table of tables">
+          {{ table.name }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <label for="waiter">Products:</label>
+    </div>
+    <div class="col-12">
+      <div formArrayName="priceTableQueries" *ngFor="let item of formControls; let i = index;">
+        <div formGroupName="{{i}}">
+          <div class="row">
+            <div class="col-auto">
+              <div class="form-group has-feedback">
+                <div class="input-group">
+                  <select class="form-control " formControlName="priceTableQuery">
+                    <option value="-1" disabled>Select table</option>
+                    <option [ngValue]="priceTableQuery.id" *ngFor="let priceTableQuery of priceTableQueries">
+                      {{ priceTableQuery.product.name }} - {{ priceTableQuery.price }} $</option>
+                  </select> </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="form-group has-feedback">
+                <div class="input-group">
+                  <input class="form-control" type="number" (change)="onQuantityChange()" formControlName="quantity">
+                </div>
+              </div>
+            </div>
+            <div class="col-auto pt-2">
+                <div class="input-group">
+                  <i class="fa fa-trash" (click)="removeItem(i)"></i>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
+          <button mat-button color="primary" type="submit" (click)="addNewItem()"><i class="fa fa-plus mr-2"></i>Add item</button>
+        </div>
+    </div>
+  <div class="row">
+    <div class="col float-right">
+      <label for="total">Total: </label>
+      <span style="margin-left: 1rem">{{ receipt.total }} $</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col float-right">
+      <button mat-button color="primary" type="submit" (click)="onSubmit()">Create receipt</button>
+    </div>
+  </div>
+</form>
