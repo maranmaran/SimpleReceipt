@@ -13,7 +13,8 @@ namespace DatabaseLayer.Configurations
             builder
                 .HasOne(x => x.Table)
                 .WithMany(y => y.Receipts)
-                .HasForeignKey(z => z.TableId);
+                .HasForeignKey(z => z.TableId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(x => x.Waiter)

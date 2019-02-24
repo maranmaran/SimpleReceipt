@@ -14,7 +14,8 @@ namespace DatabaseLayer.Configurations
             builder
                 .HasOne(x => x.Receipt)
                 .WithMany(y => y.ReceiptPriceTableQueries)
-                .HasForeignKey(z => z.ReceiptId);
+                .HasForeignKey(z => z.ReceiptId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(x => x.PriceTableQuery)

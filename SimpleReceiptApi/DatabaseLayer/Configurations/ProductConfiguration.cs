@@ -15,8 +15,7 @@ namespace DatabaseLayer.Configurations
 
             builder
                 .HasMany(x => x.PriceTableQueries)
-                .WithOne(y => y.Product)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(y => y.Product);
 
         }
     }

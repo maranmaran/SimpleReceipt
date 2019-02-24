@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DatabaseLayer.Data;
+using DatabaseLayer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using ServiceLayer;
 using Swashbuckle.AspNetCore.Swagger;
 using WebAPI.Middleware;
 
@@ -37,20 +41,20 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // ===== Add DbContext ========
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //// ===== Add Identity ========
-            //services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            //{
-            //    options.Password.RequiredLength = 3;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireDigit = false;
-            //})
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            // ===== Add Identity ========
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // ===== Add Jwt Authentication ========
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -101,14 +105,14 @@ namespace WebAPI
                 c.SwaggerDoc("v1", new Info { Title = "Discipline of strength API", Version = "v1" });
 
                 // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //c.IncludeXmlComments(xmlPath);
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ApplicationDbContext db)
         {
             if (env.IsDevelopment())
             {
@@ -147,103 +151,208 @@ namespace WebAPI
             app.UseStaticFiles(); // For the wwwroot folder
 
             // ===== Create tables ======
-            // db.Database.Migrate();
-            //CreateRoles(serviceProvider).Wait();
+            db.Database.Migrate();
+            CreateRoles(serviceProvider, db).Wait();
 
             // ===== Automapper ======
-            //ServiceAutomapper.Configure();
-            //AutoMapper.Mapper.AssertConfigurationIsValid();
+            ServiceAutomapper.Configure();
+            AutoMapper.Mapper.AssertConfigurationIsValid();
         }
 
-        private async Task CreateRoles(IServiceProvider serviceProvider)
+        private async Task CreateRoles(IServiceProvider serviceProvider, ApplicationDbContext context)
         {
-            ////initializing custom roles 
-            //var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            //string[] roleNames = { "Admin", "Coach", "Athlete" };
+            //initializing custom roles 
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] roleNames = { "Admin", "Waiter" };
 
-            //foreach (var roleName in roleNames)
-            //{
-            //    var roleExist = await roleManager.RoleExistsAsync(roleName);
-            //    if (!roleExist)
-            //    {
-            //        //create the roles and seed them to the database: Question 1
-            //        await roleManager.CreateAsync(new IdentityRole(roleName));
-            //    }
-            //}
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database: Question 1
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
 
-            //var userAdmin = await userManager.FindByEmailAsync(Configuration["AppSettings:UserEmailAdmin"]);
-            //var userCoach = await userManager.FindByEmailAsync(Configuration["AppSettings:UserEmailCoach"]);
-            //var userAthlete = await userManager.FindByEmailAsync(Configuration["AppSettings:UserEmailAthlete"]);
+            //Here you could create a super user who will maintain the web app
+            var adminUser = new ApplicationUser
+            {
+                UserName = Configuration["AppSettings:UserNameAdmin"],
+                Email = Configuration["AppSettings:UserEmailAdmin"],
+                FirstName = "Marko",
+                LastName = "Urh",
+            };
+            var waiter1 = new ApplicationUser
+            {
+                UserName = Configuration["AppSettings:UserNameW1"],
+                Email = Configuration["AppSettings:UserEmailW1"],
+                FirstName = "Waiter",
+                LastName = "1",
+            };
+            var waiter2 = new ApplicationUser
+            {
+                UserName = Configuration["AppSettings:UserNameW2"],
+                Email = Configuration["AppSettings:UserEmailW2"],
+                FirstName = "Waiter",
+                LastName = "2",
+            };
+            var waiter3 = new ApplicationUser
+            {
+                UserName = Configuration["AppSettings:UserNameW3"],
+                Email = Configuration["AppSettings:UserEmailW3"],
+                FirstName = "Waiter",
+                LastName = "3",
+            };
 
-            //if (userAdmin == null && userCoach == null && userAthlete == null)
-            //{
+            //Ensure you have these values in your appsettings.json file
+            var adminUserPass = Configuration["AppSettings:UserPasswordAdmin"];
+            var w1UserPass = Configuration["AppSettings:UserPasswordW1"];
+            var w2UserPass = Configuration["AppSettings:UserPasswordW2"];
+            var w3UserPass = Configuration["AppSettings:UserPasswordW3"];
 
-            //    //Here you could create a super user who will maintain the web app
-            //    var adminUser = new ApplicationUser
-            //    {
-            //        UserName = Configuration["AppSettings:UserNameAdmin"],
-            //        Email = Configuration["AppSettings:UserEmailAdmin"],
-            //        FirstName = "Marko",
-            //        LastName = "Urh",
-            //        Gender = Gender.Male.ToString(),
-            //    };
-            //    //Ensure you have these values in your appsettings.json file
-            //    var adminUserPass = Configuration["AppSettings:UserPasswordAdmin"];
-            //    var createAdminUser = await userManager.CreateAsync(adminUser, adminUserPass);
+            var createAdminUser = await userManager.CreateAsync(adminUser, adminUserPass);
+            var createW1 = await userManager.CreateAsync(waiter1, w1UserPass);
+            var createW2 = await userManager.CreateAsync(waiter2, w2UserPass);
+            var createW3 = await userManager.CreateAsync(waiter3, w3UserPass);
+
+            if (createAdminUser.Succeeded && createW1.Succeeded && createW2.Succeeded && createW3.Succeeded)
+            {
+                 userManager.AddToRoleAsync(adminUser, "Admin").Wait();
+                 userManager.AddToRoleAsync(adminUser, "Waiter").Wait();
+
+                 userManager.AddToRoleAsync(waiter1, "Waiter").Wait();
+                 userManager.AddToRoleAsync(waiter2, "Waiter").Wait();
+                 userManager.AddToRoleAsync(waiter3, "Waiter").Wait();
 
 
-            //    var coachUser = new ApplicationUser
-            //    {
-            //        UserName = Configuration["AppSettings:UserNameCoach"],
-            //        Email = Configuration["AppSettings:UserEmailCoach"],
-            //        FirstName = "Filip",
-            //        LastName = "Matijević",
-            //        Gender = Gender.Male.ToString(),
-            //    };
-            //    //Ensure you have these values in your appsettings.json file
-            //    var coachUserPass = Configuration["AppSettings:UserPasswordCoach"];
-            //    var createCoachUser = await userManager.CreateAsync(coachUser, coachUserPass);
+                var product1 = new Product()
+                {
+                    Name = "Beverage1",
+                    Type = '0',
+                };
+                var product2 = new Product()
+                {
+                    Name = "Beverage2",
+                    Type = '0',
+                };
+                var product3 = new Product()
+                {
+                    Name = "Beverage3",
+                    Type = '0',
+                };
 
-            //    var userId = userManager.FindByNameAsync(Configuration["AppSettings:UserNameCoach"]).Result.Id;
-            //    var athleteUser = new ApplicationUser
-            //    {
-            //        UserName = Configuration["AppSettings:UserNameAthlete"],
-            //        Email = Configuration["AppSettings:UserEmailAthlete"],
-            //        FirstName = "Andrej",
-            //        LastName = "Švenda",
-            //        CoachId = userId,
-            //        Gender = Gender.Male.ToString(),
-            //    };
-            //    //Ensure you have these values in your appsettings.json file
-            //    var athleteUserPass = Configuration["AppSettings:UserPasswordAthlete"];
-            //    var createAthleteUser = await userManager.CreateAsync(athleteUser, athleteUserPass);
+                var company = new Company()
+                {
+                    Name = "Company",
+                    Products = new List<Product>()
+                    {
+                        product1,
+                        product2,
+                        product3
+                    },
+                    Cafes = new List<Cafe>()
+                {
+                    new Cafe()
+                    {
+                        Name = "Cafe1",
+                        Tables = new List<Table>()
+                        {
+                            new Table()
+                            {
+                                Name = "Table1"
+                            },
+                            new Table()
+                            {
+                                Name = "Table2"
+                            },
+                            new Table()
+                            {
+                                Name = "Table3"
+                            },
+                        },
+                        Waiters = new List<ApplicationUser>()
+                        {
+                            adminUser,
+                            waiter1,
+                            waiter3
+                        },
+                        PriceTable = new PriceTable()
+                        {
+                            PriceTableQueries = new List<PriceTableQuery>()
+                            {
+                                new PriceTableQuery()
+                                {
+                                    Price = 2,
+                                    Product = product1
+                                },
+                                new PriceTableQuery()
+                                {
+                                    Price = 1,
+                                    Product = product2
+                                },
+                                new PriceTableQuery()
+                                {
+                                    Price = 3,
+                                    Product = product3
+                                },
+                            }
+                        },
+                    },
+                    new Cafe()
+                    {
+                        Name = "Cafe2",
+                        Tables = new List<Table>()
+                        {
+                            new Table()
+                            {
+                                Name = "Table1"
+                            },
+                            new Table()
+                            {
+                                Name = "Table2"
+                            },
+                            new Table()
+                            {
+                                Name = "Table3"
+                            },
+                        },
+                        Waiters = new List<ApplicationUser>()
+                        {
+                            waiter2,
+                        },
+                        PriceTable = new PriceTable()
+                        {
+                            PriceTableQueries = new List<PriceTableQuery>()
+                            {
+                                new PriceTableQuery()
+                                {
+                                    Price = 2,
+                                    Product = product1
+                                },
+                                new PriceTableQuery()
+                                {
+                                    Price = 1,
+                                    Product = product2
+                                },
+                                new PriceTableQuery()
+                                {
+                                    Price = 3,
+                                    Product = product3
+                                },
+                            }
+                        },
+                    }
+                }
+                };
 
-            //    if (createAdminUser.Succeeded && createCoachUser.Succeeded && createAthleteUser.Succeeded)
-            //    {
-            //        await userManager.AddToRoleAsync(adminUser, "Admin");
-            //        await userManager.AddToRoleAsync(adminUser, "Coach");
-            //        await userManager.AddToRoleAsync(adminUser, "Athlete");
-
-            //        await userManager.AddToRoleAsync(coachUser, "Coach");
-
-            //        await userManager.AddToRoleAsync(athleteUser, "Athlete");
-
-            //        athleteUser.AthleteId = athleteUser.Id;
-            //        athleteUser.ExerciseTypes =
-            //            new PrePopulateData()
-            //            .ExerciseUponAccountCreation
-            //                .AddTo(new Collection<ExerciseType>());
-
-            //        await userManager.UpdateAsync(athleteUser);
-
-            //        coachUser.AthleteId = coachUser.Id;
-            //        coachUser.ExerciseTypes =
-            //            new PrePopulateData()
-            //                .ExerciseUponAccountCreation
-            //                .AddTo(new Collection<ExerciseType>());
-            //        await userManager.UpdateAsync(coachUser);
-            //    }
+                if (!context.Companies.Any())
+                {
+                    context.Companies.Add(company);
+                    context.SaveChanges();
+                }
             }
         }
+    }
 }

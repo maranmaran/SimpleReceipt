@@ -10,12 +10,12 @@ namespace DatabaseLayer.Configurations
         {
             builder
                 .HasOne(x => x.Cafe)
-                .WithOne(y => y.PriceTable);
+                .WithOne(y => y.PriceTable)
+                .HasForeignKey<Cafe>(z => z.PriceTableId); ;
 
             builder
                 .HasMany(x => x.PriceTableQueries)
-                .WithOne(y => y.PriceTable)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(y => y.PriceTable);
         }
     }
 }

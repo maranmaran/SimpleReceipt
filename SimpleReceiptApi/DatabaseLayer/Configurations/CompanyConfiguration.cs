@@ -10,13 +10,11 @@ namespace DatabaseLayer.Configurations
         {
             builder
                 .HasMany(x => x.Products)
-                .WithOne(y => y.Company)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(y => y.Company);
 
             builder
                 .HasMany(x => x.Cafes)
-                .WithOne(y => y.Company)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(y => y.Company);
         }
     }
 }

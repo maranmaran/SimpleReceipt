@@ -11,7 +11,7 @@ namespace DatabaseLayer.Models
         public string LastName { get; set; }
 
         // for simplicity sake.. one waiter.. one cafe
-        public long CafeId { get; set; }
+        public long? CafeId { get; set; }
         public Cafe Cafe { get; set; }
 
         public virtual ICollection<Receipt> Receipts { get; set; }
