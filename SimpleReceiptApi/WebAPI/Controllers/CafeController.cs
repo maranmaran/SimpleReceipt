@@ -25,9 +25,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllCafes(long id)
+        public async Task<IActionResult> GetAllCafes(string id)
         {
-            var result = await _cafeOperations.GetAllByCompanyId(id);
+            var result = await _cafeOperations.GetAllByUserId(id);
             return Ok(result);
         }
 

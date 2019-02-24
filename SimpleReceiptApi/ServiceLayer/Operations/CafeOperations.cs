@@ -13,7 +13,7 @@ namespace ServiceLayer.Operations
 {
     public interface ICafeOperations
     {
-        Task<List<CafeDto>> GetAllByCompanyId(long id);
+        Task<List<CafeDto>> GetAllByUserId(string id);
     }
 
     internal class CafeOperations: ICafeOperations
@@ -25,9 +25,9 @@ namespace ServiceLayer.Operations
             _context = context;
         }
 
-        public async Task<List<CafeDto>> GetAllByCompanyId(long id)
+        public async Task<List<CafeDto>> GetAllByUserId(string id)
         {
-            var cafes = await _context.Cafes.Where(x => x.CompanyId.Equals(id)).ToListAsync();
+            var cafes = await _context.Cafes.Where(x => x.Waiters.Any(y => y.WaiterId.Equals(id))).ToListAsync();
             return Mapper.Map<List<CafeDto>>(cafes);
         }
     }
