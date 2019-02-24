@@ -271,27 +271,6 @@ namespace WebAPI
                             Name = "Table3"
                         },
                     },
-                    PriceTable = new PriceTable()
-                    {
-                        PriceTableQueries = new List<PriceTableQuery>()
-                        {
-                            new PriceTableQuery()
-                            {
-                                Price = 2,
-                                Product = product1
-                            },
-                            new PriceTableQuery()
-                            {
-                                Price = 1,
-                                Product = product2
-                            },
-                            new PriceTableQuery()
-                            {
-                                Price = 3,
-                                Product = product3
-                            },
-                        }
-                    },
                 };
 
                 var cafe2 = new Cafe()
@@ -312,27 +291,52 @@ namespace WebAPI
                             Name = "Table3"
                         },
                     },
-                    PriceTable = new PriceTable()
+                };
+
+                var priceTable1 = new PriceTable()
+                {
+                    Cafe = cafe1,
+                    PriceTableQueries = new List<PriceTableQuery>()
                     {
-                        PriceTableQueries = new List<PriceTableQuery>()
+                        new PriceTableQuery()
                         {
-                            new PriceTableQuery()
-                            {
-                                Price = 2,
-                                Product = product1
-                            },
-                            new PriceTableQuery()
-                            {
-                                Price = 1,
-                                Product = product2
-                            },
-                            new PriceTableQuery()
-                            {
-                                Price = 3,
-                                Product = product3
-                            },
-                        }
-                    },
+                            Price = 2,
+                            Product = product1
+                        },
+                        new PriceTableQuery()
+                        {
+                            Price = 1,
+                            Product = product2
+                        },
+                        new PriceTableQuery()
+                        {
+                            Price = 3,
+                            Product = product3
+                        },
+                    }
+                };
+
+                var priceTable2 = new PriceTable()
+                {
+                    Cafe = cafe2,
+                    PriceTableQueries = new List<PriceTableQuery>()
+                    {
+                        new PriceTableQuery()
+                        {
+                            Price = 2,
+                            Product = product1
+                        },
+                        new PriceTableQuery()
+                        {
+                            Price = 1,
+                            Product = product2
+                        },
+                        new PriceTableQuery()
+                        {
+                            Price = 3,
+                            Product = product3
+                        },
+                    }
                 };
 
                 var company = new Company()
@@ -400,6 +404,7 @@ namespace WebAPI
                 {
                     context.Companies.Add(company);
                     context.WaiterCafes.AddRange(waiterCafes);
+                    context.PriceTables.AddRange(new List<PriceTable>() { priceTable1, priceTable2 });
                     context.SaveChanges();
                 }
             }

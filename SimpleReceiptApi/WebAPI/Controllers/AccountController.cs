@@ -34,9 +34,9 @@ namespace Website.Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        public IActionResult Login([FromBody] LoginViewModel model)
         {
-            var result = await _accountOperations.Login(model);
+            var result = _accountOperations.Login(model).Result;
             return Ok(result);
         }
 

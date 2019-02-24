@@ -15,6 +15,7 @@ namespace ServiceLayer.Operations
     {
         Task<List<ReceiptDto>> GetAllReceiptsByCafeId(long id);
         void CreateReceipt(ReceiptDto receipt);
+        Task<List<ReceiptPriceTableQueryDto>> GetAllReceiptPriceTableQueryByReceiptId(long id);
     }
 
     internal class ReceiptOperations: IReceiptOperations
@@ -31,9 +32,6 @@ namespace ServiceLayer.Operations
             var receipts = await _context.Receipts
                 .Include(x => x.Waiter)
                 .Include(x => x.Table)
-                .Include(x => x.ReceiptPriceTableQueries)
-                .ThenInclude(x => x.PriceTableQuery)
-                .ThenInclude(x => x.Product)
                 .Where(x => x.CafeId.Equals(id)).ToListAsync();
             return Mapper.Map<List<ReceiptDto>>(receipts);
         }
@@ -45,6 +43,15 @@ namespace ServiceLayer.Operations
 
             _context.Receipts.Add(newReceipt);
             _context.SaveChanges();
+        }
+
+        public async Task<List<ReceiptPriceTableQueryDto>> GetAllReceiptPriceTableQueryByReceiptId(long id)
+        {
+            var result = await _context.ReceiptPriceTableQueries
+                .Include(x => x.PriceTableQuery)
+                .ThenInclude(x => x.Product).Where(x => x.ReceiptId.Equals(id)).ToListAsync();
+
+            return Mapper.Map<List<ReceiptPriceTableQueryDto>>(result);
         }
 
         private List<ReceiptPriceTableQuery> MergeDuplicateInstances(Receipt receipt)

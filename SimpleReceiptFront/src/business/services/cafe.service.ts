@@ -32,18 +32,17 @@ export class CafeService implements OnInit {
     return viewModel;
   }
 
-  automaticLogin() {
-    console.log('Logging in');
-    this.authService.login('admin', 'admin', 'false');
-  }
-
   getAllCafes(url = 'api/Cafe/GetAllCafes/') {
     if (this.cafes.length === 0) {
-      this.automaticLogin();
-      this.http.get(url + this.authService.getUserId(), this.headers).subscribe(
-        (res: any) => this.cafes = this.createInstances(res),
-        err => console.log(err)
-      );
+      this.authService.login('admin', 'admin', 'false').subscribe(
+        (response: any) => {
+          this.authService.setSession(response);
+          this.http.get(url + this.authService.getUserId(), this.headers).subscribe(
+            (res: any) => this.cafes = this.createInstances(res),
+            err => console.log(err)
+          );
+        },
+       err => { console.log(err); });
     }
   }
 

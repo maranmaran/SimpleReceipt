@@ -14,7 +14,6 @@ import { CafeService } from '../../../../business/services/cafe.service';
   selector: 'app-create-or-edit-receipt',
   templateUrl: './create-or-edit-receipt.component.html',
   styleUrls: ['./create-or-edit-receipt.component.scss'],
-  providers: [AuthService, ReceiptService]
 })
 export class CreateOrEditReceiptComponent implements OnInit {
 
@@ -155,7 +154,6 @@ export class CreateOrEditReceiptComponent implements OnInit {
         this.receipt.receiptPriceTableQueries = receiptPriceTableQueries;
         this.receipt.createdOn = new Date();
 
-        console.log(this.receipt);
         this.receiptService.createReceipt(this.receipt);
         this.router.navigate(['/receipts', this.cafeId]);
       }

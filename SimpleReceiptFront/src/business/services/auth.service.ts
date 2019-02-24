@@ -17,15 +17,10 @@ export class AuthService {
 
   login(username: string, password: string, rememberMe: string) {
     return this.http.post(this.baseUrl + 'Login',
-      { username, password, rememberMe })
-      .subscribe(
-        (response: any) => {
-          this.setSession(response);
-        },
-       err => { console.log(err); });
+      { username, password, rememberMe });
   }
 
-  private setSession(authResult) {
+  public setSession(authResult) {
     const expiresAt = moment().add(authResult.timeout, 'second');
     localStorage.setItem('userId', authResult.userId);
     localStorage.setItem('token', authResult.token);

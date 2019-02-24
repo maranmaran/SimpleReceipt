@@ -12,7 +12,6 @@ namespace DatabaseLayer.Models
         public long CompanyId { get; set; }
         public Company Company { get; set; }
 
-        public long PriceTableId { get; set; }
         public PriceTable PriceTable { get; set; }
 
         public ICollection<WaiterCafe> Waiters { get; set; }

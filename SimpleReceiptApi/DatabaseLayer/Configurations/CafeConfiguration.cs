@@ -11,7 +11,8 @@ namespace DatabaseLayer.Configurations
             builder
                 .HasOne(x => x.PriceTable)
                 .WithOne(y => y.Cafe)
-                .HasForeignKey<PriceTable>(z => z.CafeId);
+                .HasForeignKey<PriceTable>(z => z.CafeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasMany(x => x.Tables)

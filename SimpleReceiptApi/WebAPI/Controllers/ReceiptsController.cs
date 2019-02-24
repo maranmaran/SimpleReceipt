@@ -26,6 +26,13 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAllReceiptPriceTableQueryByReceiptId(long id)
+        {
+            var result = await _receiptOperations.GetAllReceiptPriceTableQueryByReceiptId(id);
+            return Ok(result);
+        }
+
         [HttpPost]
         public IActionResult CreateReceipt([FromBody] ReceiptDto receipt)
         {

@@ -1,13 +1,12 @@
+import {ReceiptService} from '../../../business/services/receipt.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Receipt } from 'src/business/models/receipt.model';
-import { ReceiptService } from 'src/business/services/receipt.service';
 
 @Component({
   selector: 'app-receipts',
   templateUrl: './receipts.component.html',
   styleUrls: ['./receipts.component.scss'],
-  providers: [ReceiptService]
 })
 export class ReceiptsComponent implements OnInit {
 
@@ -15,17 +14,21 @@ export class ReceiptsComponent implements OnInit {
   receiptSelected = false;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private receiptService: ReceiptService
     ) {
-     // force route reload whenever params change;
-     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.route.params.subscribe(params => {
+        this.cafeId = params.id;
+      });
    }
 
   ngOnInit() {
-    this.cafeId = this.route.snapshot.paramMap.get('id');
     this.getAllCafeReceipts();
+
+    this.receiptService.receiptCreated.subscribe(
+      () => this.getAllCafeReceipts(),
+      err => console.log(err)
+    );
   }
 
   getAllCafeReceipts() {

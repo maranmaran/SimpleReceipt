@@ -10,6 +10,7 @@ export class ReceiptService implements OnInit {
 
   newReceipts = new EventEmitter<Receipt[]>();
   selectedReceipt = new EventEmitter<Receipt>();
+  receiptCreated = new EventEmitter<void>();
 
   constructor(
     private http: HttpClient
@@ -36,9 +37,16 @@ export class ReceiptService implements OnInit {
     return this.http.get(url + cafeId, this.headers);
   }
 
+  GetAllReceiptPriceTableQueryByReceiptId(receiptId: number, url = 'api/receipts/GetAllReceiptPriceTableQueryByReceiptId/') {
+    return this.http.get(url + receiptId, this.headers);
+  }
+
+
   createReceipt(receipt: Receipt, url = 'api/receipts/createreceipt') {
     this.http.post(url, receipt, this.headers).subscribe(
-      () => {},
+      () => {
+        this.receiptCreated.emit();
+      },
       err => console.log(err)
     );
   }

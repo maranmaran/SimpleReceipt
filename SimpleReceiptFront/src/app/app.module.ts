@@ -19,6 +19,7 @@ import { ErrorHelper } from '../business/helpers/error.helper';
 import { CreateOrEditReceiptComponent } from './application/receipts/create-or-edit-receipt/create-or-edit-receipt.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CafeService } from '../business/services/cafe.service';
+import { ReceiptService } from '../business/services/receipt.service';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CafeService } from '../business/services/cafe.service';
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
     AuthService,
+    ReceiptService,
     CafeService,
     ErrorHelper
   ],

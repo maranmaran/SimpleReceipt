@@ -8,7 +8,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
   templateUrl: './receipts-list.component.html',
   styleUrls: ['./receipts-list.component.scss']
 })
-export class ReceiptsListComponent implements OnInit, OnDestroy {
+export class ReceiptsListComponent implements OnInit {
 
 
   receipts: Receipt[] = [];
@@ -27,17 +27,12 @@ export class ReceiptsListComponent implements OnInit, OnDestroy {
     this.receiptService.newReceipts.subscribe(
       (receipts: Receipt[]) => {
         this.receipts = receipts;
-        console.log(this.receipts);
         this.dataSource = new MatTableDataSource(this.receipts);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
       err => console.log(err)
     );
-  }
-
-  ngOnDestroy() {
-    this.receiptService.newReceipts.unsubscribe();
   }
 
   applyFilter(filterValue: string) {
