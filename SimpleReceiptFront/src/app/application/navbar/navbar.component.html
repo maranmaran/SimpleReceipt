@@ -1,6 +1,9 @@
-<button mat-button [matMenuTriggerFor]="menu">Cafes</button>
-<mat-menu #menu="matMenu">
-  <div *ngIf="this.cafeService.cafes.length > 0">
-    <button *ngFor="let cafe of this.cafeService.cafes" mat-menu-item [routerLink]="['/receipts', cafe.id ]">Cafe {{ cafe.id }}</button>
-  </div>
-</mat-menu>
+<mat-toolbar>
+  <button mat-button [matMenuTriggerFor]="menu">Cafes</button>
+  <mat-menu #menu="matMenu">
+    <div *ngIf="this.cafeService.cafes.length > 0">
+      <button *ngFor="let cafe of this.cafeService.cafes" mat-menu-item [routerLink]="['/receipts', cafe.id ]">Cafe
+        {{ cafe.id }}</button>
+    </div>
+  </mat-menu>
+</mat-toolbar>

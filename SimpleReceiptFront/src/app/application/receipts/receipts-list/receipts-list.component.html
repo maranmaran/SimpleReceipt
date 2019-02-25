@@ -2,41 +2,43 @@
   No results to preview
 </div>
 
-<div class="table-container" *ngIf="receipts.length > 0">
-  <table mat-table [dataSource]="dataSource">
+<ng-container *ngIf="receipts.length > 0">
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef>Date</th>
-      <td mat-cell *matCellDef="let receipt">
-        {{ receipt.createdOn | date: 'EEEE, dd/MM/yy' }}
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let receipt">
+          {{ receipt.createdOn | date: 'EEEE, dd/MM/yy' }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="waiter">
-      <th mat-header-cell *matHeaderCellDef>Waiter</th>
-      <td mat-cell *matCellDef="let receipt">
-        {{ receipt.waiter.firstName }} {{ receipt.waiter.lastName }}
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="waiter">
+        <th mat-header-cell *matHeaderCellDef>Waiter</th>
+        <td mat-cell *matCellDef="let receipt">
+          {{ receipt.waiter.firstName }} {{ receipt.waiter.lastName }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="table">
-      <th mat-header-cell *matHeaderCellDef>Table</th>
-      <td mat-cell *matCellDef="let receipt">
-        {{ receipt.table.name }}
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="table">
+        <th mat-header-cell *matHeaderCellDef>Table</th>
+        <td mat-cell *matCellDef="let receipt">
+          {{ receipt.table.name }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="total">
-      <th mat-header-cell *matHeaderCellDef>Total</th>
-      <td mat-cell *matCellDef="let receipt">
-        {{ receipt.total }} $
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let receipt">
+          {{ receipt.total }} $
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row (click)="onClick(receipt)" *matRowDef="let receipt; columns: displayedColumns"></tr>
-  </table>
-</div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row (click)="onClick(receipt)" *matRowDef="let receipt; columns: displayedColumns"></tr>
+    </table>
+  </div>
 
-<mat-paginator [length]="receipts.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 35, 50, 100]">
-</mat-paginator>
+  <mat-paginator [length]="receipts.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 35, 50, 100]">
+  </mat-paginator>
+</ng-container>

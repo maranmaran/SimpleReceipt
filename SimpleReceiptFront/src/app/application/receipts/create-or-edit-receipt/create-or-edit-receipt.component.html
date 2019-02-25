@@ -27,7 +27,7 @@
     <div class="col-12">
       <label for="waiter">Products:</label>
     </div>
-    <div class="col-12">
+    <div class="col-12 ml-3">
       <div formArrayName="priceTableQueries" *ngFor="let item of formControls; let i = index;">
         <div formGroupName="{{i}}">
           <div class="row">
@@ -49,9 +49,9 @@
               </div>
             </div>
             <div class="col-auto pt-2">
-                <div class="input-group">
-                  <i class="fa fa-trash" (click)="removeItem(i)"></i>
-                </div>
+              <div class="input-group">
+                <i class="fa fa-trash" style="cursor: pointer" (click)="removeItem(i)"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -59,11 +59,12 @@
     </div>
   </div>
   <div class="row">
-      <div class="col-12">
-          <button mat-button color="primary" type="submit" (click)="addNewItem()"><i class="fa fa-plus mr-2"></i>Add item</button>
-        </div>
+    <div class="col-12">
+      <button mat-button color="primary" type="submit" (click)="addNewItem()"><i class="fa fa-plus mr-2"></i>Add
+        item</button>
     </div>
-  <div class="row">
+  </div>
+  <div class="row mt-3">
     <div class="col float-right">
       <label for="total">Total: </label>
       <span style="margin-left: 1rem">{{ receipt.total }} $</span>
