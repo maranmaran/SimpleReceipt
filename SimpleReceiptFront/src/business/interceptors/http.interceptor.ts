@@ -11,7 +11,7 @@ export class HttpInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const baseUrl = 'https://localhost:44317/';
+    const baseUrl = 'http://localhost:65389/';
     // onst baseUrl = '';
 
     req = req.clone({
