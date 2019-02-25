@@ -4,16 +4,21 @@ Clone repo
 Make sure you have admin rights
 
 Backend project:
-  Open project
-  Set api project as startup
-  Configure connection string in appSettings.json
-  Start
-  http://localhost:65389/api/index.html
-  
+<ul>
+  <li>Open project</li>
+  <li>Set api project as startup</li>
+  <li>Configure connection string in appSettings.json</li>
+  <li>Start</li>
+  <li>http://localhost:65389/api/index.html</li>
+</ul>
+
 Frontend project:
-  Open project
-  Run "npm install" to setup dependencies
-  Run "ng serve"
-  http://localhost:4200/#/
+<ul>
+  <li>Open project</li>
+  <li>Run "npm install" to setup dependencies</li>
+  <li>Run "ng serve"</li>
+  <li>Start</li>
+  <li>http://localhost:4200/#/</li>
+</ul>
   
- Contact urh.marko@gmail.com for troubleshooting assistance
+<p> Contact urh.marko@gmail.com for troubleshooting assistance </p>
