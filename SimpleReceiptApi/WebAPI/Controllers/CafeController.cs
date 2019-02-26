@@ -34,23 +34,23 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetAllWaiters(long id)
+        public async Task<IActionResult> GetAllWaiters(long id)
         {
-            var result = _applicationUserOperations.GetAllWaitersByCafeId(id).Result;
+            var result = await _applicationUserOperations.GetAllWaitersByCafeId(id);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetAllTables(long id)
+        public async Task<IActionResult> GetAllTables(long id)
         {
-            var result = _tableOperations.GetAllByCafeId(id).Result;
+            var result = await _tableOperations.GetAllByCafeId(id);
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetAllPriceTableQueries(long id)
+        public async Task<IActionResult> GetAllPriceTableQueries(long id)
         {
-            var result = _priceTableQueryOperations.GetAllPriceTableQueriesByCafeId(id).Result;
+            var result = await _priceTableQueryOperations.GetAllPriceTableQueriesByCafeId(id);
             return Ok(result);
         }
     }

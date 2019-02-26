@@ -25,6 +25,7 @@ using Newtonsoft.Json;
 using ServiceLayer;
 using ServiceLayer.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using WebAPI.Middleware;
 
 namespace WebAPI
@@ -150,6 +151,7 @@ namespace WebAPI
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Simple receipt api");
                 c.RoutePrefix = "api";
+                c.DocExpansion(DocExpansion.None);
             });
 
             // ===== Error handling middleware =====
