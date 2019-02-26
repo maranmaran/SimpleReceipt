@@ -30,6 +30,11 @@ namespace DatabaseLayer.Data
 
         }
 
+        public ApplicationDbContext()
+        {
+            
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
