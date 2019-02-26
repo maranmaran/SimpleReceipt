@@ -41,9 +41,13 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connString = Configuration.GetConnectionString("DefaultConnection");
+            if (connString == "Your connection string")
+                throw new Exception("Please modify you connection string to run this api :)");
+
             // ===== Add DbContext ========
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(connString));
 
             // ===== Add Identity ========
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
