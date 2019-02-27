@@ -4,13 +4,20 @@ using System.Linq;
 using System.Text;
 using DatabaseLayer.Data;
 using DatabaseLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServiceLayer.Tests
 {
     public static class InMemoryDb
     {
-        public static void InitMe(ref ApplicationDbContext context)
+        public static ApplicationDbContext GetContext()
         {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
             var waiter1 = new ApplicationUser()
             {
                 Email = "waiter1@gmail.com",
@@ -197,6 +204,8 @@ namespace ServiceLayer.Tests
                 context.PriceTables.AddRange(new List<PriceTable>() { priceTable1, priceTable2 });
                 context.SaveChanges();
             }
+
+            return context;
         }
     }
 }

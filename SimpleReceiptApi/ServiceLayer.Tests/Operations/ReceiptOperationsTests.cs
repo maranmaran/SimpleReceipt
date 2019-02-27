@@ -17,22 +17,17 @@ namespace ServiceLayer.Tests.Operations
         private ApplicationDbContext _context;
         private IReceiptOperations _receiptOperations;
 
-        public ReceiptOperationsTests()
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
         {
             ServiceAutomapper.Configure();
         }
 
         [TestInitialize]
-        public void Init()
+        public void TestInitialize()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            _context = new ApplicationDbContext(options);
+            _context = InMemoryDb.GetContext();
             _receiptOperations = new ReceiptOperations(_context);
-
-            InMemoryDb.InitMe(ref _context);
         }
 
         [TestMethod]
@@ -43,7 +38,6 @@ namespace ServiceLayer.Tests.Operations
 
             Assert.IsTrue(receipt != null);
             Assert.IsTrue(receipt.Id == 1);
-
         }
 
         [TestMethod]
@@ -53,20 +47,30 @@ namespace ServiceLayer.Tests.Operations
             var priceTableQueries = _receiptOperations.GetAllReceiptPriceTableQueryByReceiptId(receipt.Id).Result;
 
             Assert.IsTrue(priceTableQueries != null);
-            Assert.AreEqual(priceTableQueries.Count, 2);
+            Assert.AreEqual(3, priceTableQueries.Count);
+        }
+
+        [TestMethod]
+        public void GetAllReceiptPriceTableQueryByReceiptId_Merges()
+        {
+            var receipt = this.CreateAndGetReceipt(merge: true);
+            var priceTableQueries = _receiptOperations.GetAllReceiptPriceTableQueryByReceiptId(receipt.Id).Result;
+
+            Assert.IsTrue(priceTableQueries != null);
+            Assert.AreEqual(2, priceTableQueries.Count);
         }
 
         [TestMethod]
         public void GetAllReceiptsByCafeId_Successful()
         {
-            var createdReceipt = this.CreateAndGetReceipt();
+            this.CreateAndGetReceipt();
             var cafe = _context.Cafes.First();
             var receipts = _receiptOperations.GetAllReceiptsByCafeId(cafe.Id).Result;
 
             Assert.IsTrue(receipts != null && receipts.Count > 0);
         }
 
-        private Receipt CreateAndGetReceipt()
+        private Receipt CreateAndGetReceipt(bool merge = false)
         {
             var waiter = _context.ApplicationUsers.First();
             var table = _context.Tables.First();
@@ -82,17 +86,17 @@ namespace ServiceLayer.Tests.Operations
                 {
                     new ReceiptPriceTableQuery()
                     {
-                        PriceTableQuery = priceTableQueries.First(),
+                        PriceTableQueryId = priceTableQueries[0].Id,
                         Quantity = 2
                     },
                     new ReceiptPriceTableQuery()
                     {
-                        PriceTableQuery = priceTableQueries.Last(),
+                        PriceTableQueryId = priceTableQueries[1].Id,
                         Quantity = 1
                     },
                     new ReceiptPriceTableQuery()
                     {
-                        PriceTableQuery = priceTableQueries.First(),
+                        PriceTableQueryId = merge ? priceTableQueries[0].Id : priceTableQueries[2].Id,
                         Quantity = 4
                     },
                 }

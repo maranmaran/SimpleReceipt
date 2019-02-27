@@ -22,22 +22,17 @@ namespace ServiceLayer.Tests.Operations
         private ApplicationDbContext _context;
         private ICafeOperations _cafeOperations;
 
-        public CafeOperationsTests()
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
         {
             ServiceAutomapper.Configure();
         }
 
         [TestInitialize]
-        public void Init()
+        public void Initialize()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            _context = new ApplicationDbContext(options);
+            _context = InMemoryDb.GetContext();
             _cafeOperations = new CafeOperations(_context);
-
-            InMemoryDb.InitMe(ref _context);
         }
 
         [TestMethod]
@@ -47,7 +42,6 @@ namespace ServiceLayer.Tests.Operations
             var cafes = _cafeOperations.GetAllByUserId(user.Id).Result;
 
             Assert.IsTrue(cafes.Any());
-
         }
     }
 }
