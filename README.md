@@ -20,8 +20,6 @@ Frontend project:
   <li>Start</li>
   <li>http://localhost:4200/#/</li>
 </ul>
-  
-<p> Contact urh.marko@gmail.com for troubleshooting assistance </p>
 
 <h4>App</h4>
 <ul>
